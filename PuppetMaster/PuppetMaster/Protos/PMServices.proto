@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+
+service PMServices{
+	rpc FailedServers (ListFailedServers) returns (FailedServersACK);
+	rpc UpdateLeader (NewLeader) returns (NewLeaderACK);
+	rpc RemoveCrashedReplicaPM (CrashedReplicaPM) returns (CrashedReplicaPMACK);
+}
+
+message CrashedReplicaPM{
+	string partitionid = 1;
+	repeated string serverid=2;
+}
+
+message CrashedReplicaPMACK{}
+
+message ListFailedServers{
+	repeated string serverid = 1;
+}
+
+message FailedServersACK{
+}
+
+message NewLeader{
+	string leaderid=1;
+	string partid=2;
+}
+
+message NewLeaderACK{
+
+}

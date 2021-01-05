@@ -1,0 +1,155 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+service GStoreServices{
+	rpc Write (WriteObjectClient) returns (WriteObjectClientACK);
+	rpc Read (ReadObjectClient) returns (ObjectClient);
+	rpc LockObject (LockObjectInfo) returns (LockObjectACK);
+	rpc UpdateObject (UpdateObjectInfo) returns (UpdateObjectACK);
+	rpc ReplicateObject (CreateObjectInReplicas) returns (CreateObjectInReplicasACK);
+	rpc RequestAllObjects (RequestAllObj) returns (ServerObject);
+	rpc HasObject (HasObjectMsg) returns (HasObjectACK);
+	rpc ReceivePartitionInfo (CompletePartition) returns (PartitionACK);
+	rpc StatusServer (AskStatusServer) returns (StatusServerAck);
+	rpc FreezeServer (FreezeMessage) returns (FreezeMessageACK);
+	rpc UnfreezeServer (UnfreezeMessage) returns (UnfreezeACK);
+	rpc IsAliveServer (IsAliveMessage) returns (IsAliveMessageACK);
+	rpc ServerCrasedServer (ServerCrashedID) returns (ServerCrashedACK);
+	rpc RemoveCrashedReplicaServer (CrashedReplicaServer) returns (CrashedReplicaServerACK);
+}
+
+message CrashedReplicaServer{
+	string partitionid = 1;
+	repeated string serverid=2;
+}
+
+message CrashedReplicaServerACK{}
+
+message IsAliveMessage{
+}
+
+message IsAliveMessageACK{
+	string serverid = 1;
+}
+
+message WriteObjectClient{
+	string partid = 1;
+	string objectid = 2;
+	string object = 3;
+}
+
+message WriteObjectClientACK{
+	bool ok = 1;
+}
+
+message ReadObjectClient{
+	string partid = 1;
+	string objectid = 2;
+}
+
+message ObjectClient{
+	string objectclient = 1;
+}
+
+message LockObjectInfo{
+	string partid = 1;
+	string objectid = 2;
+}
+
+message LockObjectACK{
+	bool ok = 1;
+}
+
+message UpdateObjectInfo{
+	string partid = 1;
+	string objectid = 2;
+	string objectvalue=3;
+}
+
+message UpdateObjectACK{
+	bool ok = 1;
+}
+
+message CreateObjectInReplicas{
+	string partid = 1;
+	string objectid = 2;
+	string object = 3;
+}
+
+message CreateObjectInReplicasACK{
+	bool ok = 1;
+}
+
+message RequestAllObj{
+	string part_id =1;
+}
+
+message ServerObject{
+	repeated AllPartInfo partitions = 1;
+}
+
+message AllPartInfo{
+	string part_id = 1;
+	bool ismaster = 2;
+	repeated ObjectInfo objects = 3;
+}
+
+message ObjectInfo{
+	string partitionid=1;
+	string objectid = 2;
+	string objectvalue=3;
+}
+
+message HasObjectMsg{
+	string partid = 1;
+	string objectid = 2;
+}
+
+message HasObjectACK{
+	bool ok = 1;
+}
+
+message CompletePartition{
+	repeated PartitionInfo partitions= 1; 
+}
+
+message PartitionInfo{
+	string partitionid = 1;
+	repeated ServerInfo servers = 2;
+}
+
+message ServerInfo{
+	string serverid = 1;
+	string url = 2;
+	int32 mindelay = 3;
+	int32 maxdelay = 4;
+	bool ismaster = 5;
+}
+
+message PartitionACK{
+}
+
+message AskStatusServer{
+}
+
+message StatusServerAck{
+}
+
+message FreezeMessage{
+}
+
+message FreezeMessageACK{
+}
+
+message UnfreezeMessage{
+}
+
+message UnfreezeACK{
+}
+
+message ServerCrashedID{
+	string serverid = 1;
+}
+
+message ServerCrashedACK{}

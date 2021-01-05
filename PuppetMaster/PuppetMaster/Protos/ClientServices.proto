@@ -1,0 +1,58 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Client";
+
+service ClientServices{
+	rpc ReceivePartitionInfo (CompletePartitionClient) returns (PartitionACK);
+	rpc StatusClient (AskStatusClient) returns (StatusACKClient);
+	rpc ServerCrasedClient (ServerCrashedClientID) returns (ServerCrashedClientACK);
+	rpc UpdateLeaderClient (LeaderInfo) returns (LeaderInfoACK);
+	rpc RemoveCrashedReplicaClient (CrashedReplicaClient) returns (CrashedReplicaClientACK);
+}
+
+message CrashedReplicaClient{
+	string partitionid = 1;
+	repeated string serverid=2;
+}
+
+message CrashedReplicaClientACK{}
+
+message CompletePartitionClient{
+	repeated PartitionInfoClient partitions = 1; 
+}
+
+message PartitionInfoClient{
+	string partitionid = 1;
+	repeated ServerInfoClient servers = 2;
+}
+
+message ServerInfoClient{
+	string serverid = 1;
+	string url = 2;
+	int32 mindelay = 3;
+	int32 maxdelay = 4;
+	bool ismaster = 5;
+}
+
+message PartitionACK{
+}
+
+message AskStatusClient{
+
+}
+
+message StatusACKClient{
+}
+
+message ServerCrashedClientID{
+	string serverclientid = 1;
+}
+
+message ServerCrashedClientACK{}
+
+message LeaderInfo{
+	string partitionid = 1;
+	string leaderid = 2;
+}
+
+message LeaderInfoACK{}

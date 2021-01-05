@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="PuppetForm.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\ClientServices.proto" />
+    <None Remove="Protos\GStoreServices.proto" />
+    <None Remove="Protos\PMServices.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.33.1" />
+    <PackageReference Include="Grpc.Tools" Version="2.33.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <ProjectReference Include="..\..\Client\Client.csproj" />
+	<ProjectReference Include="..\..\Server\Server.csproj" />
+	<Protobuf Include="Protos\ClientServices.proto" GrpcServices="Both" />
+	<Protobuf Include="Protos\GStoreServices.proto" GrpcServices="Both" />
+	<Protobuf Include="Protos\PMServices.proto" />
+  </ItemGroup>
+
+</Project>
